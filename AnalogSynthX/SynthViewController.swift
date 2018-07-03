@@ -385,13 +385,22 @@ class SynthViewController: UIViewController {
 
     // About App
     @IBAction func buildThisSynth(_ sender: RoundedButton) {
-        openURL("http://audiokit.io/examples/AnalogSynthX")
+        openURL("https://audiokitpro.com/audiokit/")
     }
 
     @IBAction func newAppPressed(_ sender: RoundedButton) {
          openURL("https://audiokitpro.com/audiokit-synth-one/")
     }
 
+    @IBAction func webPressed(_ sender: RoundedButton) {
+         openURL("http://audiokit.io/examples/AnalogSynthX")
+    }
+    
+    @IBAction func updatePressed(_ sender: RoundedButton) {
+        openURL("https://itunes.apple.com/us/app/audiokit-synth-one-synthesizer/id1371050497?ls=1&mt=8")
+    }
+    
+    
     //*****************************************************************
     // MARK: - 🎹 Key Presses
     //*****************************************************************

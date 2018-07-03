@@ -6,7 +6,9 @@
 
 This is a simple iPad synthesizer app example by **Matthew Fecher** and **Aure Prochazka** built with Swift and AudioKit. It includes examples of Audiobus, Inter-app audio, and more. Created in late 2015, this is the first open-source synthesizer ever written in Swift. This code was originally included in AudioKit, and now has been updated to its own repo.
 
-The complete source code is MIT open source. Meaning, you can use it as a learning tool, or even create your own synth app from the code. There's no charge or fee to use the code. Use it as a starting point to create the synth of your dreams! If you use this code in an app to be released to the App Store, you must change the graphics. And, please thank AudioKit. 🙏
+The complete source code is MIT open source. Meaning, you can use it as a learning tool, or even create your own synth app from the code. There's no charge or fee to use the code. Use it as a starting point to create the synth of your dreams.   
+
+If you use this code in an app to be released to the App Store, you must change the graphics. And, please thank AudioKit.
 
 <img width="50%" align="right" src="http://audiokit.io/examples/AnalogSynthX/analgsynthx.jpg">
 
