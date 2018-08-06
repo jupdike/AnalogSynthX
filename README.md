@@ -39,6 +39,10 @@ cd Examples/iOS/AnalogSynthX; pod install;
 * Noise generator
 * 8-Bit Crusher
 
+## Updated Synth Example
+
+For a more robust open-source iOS synth example, please see our new [AudioKit Synth One](https://github.com/AudioKit/AudioKitSynthOne)  code  
+
 ## Sound Tips for Analog Synth X:
 
 * You can get a pure Sine wave by (1) turning the Osc Mix to the left (2) turning off VCO1 (3) Turning the FM up!
