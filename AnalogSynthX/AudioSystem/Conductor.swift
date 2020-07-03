@@ -52,11 +52,11 @@ class Conductor: AKMIDIListener {
         } catch {
             AKLog("AudioKit did not start!")
         }
-        Audiobus.start()
+        //Audiobus.start()
 
         let midi = AudioKit.midi
         midi.createVirtualPorts()
-        midi.openInput("Session 1")
+        midi.openInput(name: "Session 1")
         midi.addListener(self)
     }
 
