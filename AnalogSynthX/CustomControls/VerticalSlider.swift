@@ -81,6 +81,7 @@ extension VerticalSlider {
         let bundle = Bundle(for: type(of: self))
         sliderTop = UIImage(named: sliderTopImage, in: bundle, compatibleWith: self.traitCollection)
         sliderTrack = UIImage(named: sliderTrackImage, in: bundle, compatibleWith: self.traitCollection)
+        setNeedsDisplay()
     }
 
     override func draw(_ rect: CGRect) {

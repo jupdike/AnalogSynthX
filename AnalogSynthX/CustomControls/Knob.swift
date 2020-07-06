@@ -37,6 +37,7 @@ class Knob: UIView {
                 value = minimum
             }
             self.knobValue = CGFloat((value - minimum) / (maximum - minimum))
+            setNeedsDisplay()
         }
     }
 

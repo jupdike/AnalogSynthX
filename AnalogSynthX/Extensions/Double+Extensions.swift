@@ -58,4 +58,11 @@ extension Double {
         let scale = (log(rangeMax) - log(rangeMin))
         return exp(log(rangeMin) + (scale * value))
     }
+    
+    // reverse the above
+    public static func reverseScaleRangeLog(_ value: Double, rangeMin: Double, rangeMax: Double) -> Double {
+        let scale = (log(rangeMax) - log(rangeMin))
+        let unscaled = (log(value) - log(rangeMin)) / scale
+        return unscaled
+    }
 }

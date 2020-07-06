@@ -25,6 +25,8 @@
 		94B009E71C4B61BD000CF18E /* SynthVC+NoteNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94B009E61C4B61BD000CF18E /* SynthVC+NoteNames.swift */; };
 		94FBB47E1C4483AE00E14C86 /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FBB47D1C4483AE00E14C86 /* Double+Extensions.swift */; };
 		94FBB4821C44868000E14C86 /* VerticalSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94FBB4811C44868000E14C86 /* VerticalSlider.swift */; };
+		A3289A6624B13AF200B7498C /* MusicBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3289A6524B13AF200B7498C /* MusicBox.swift */; };
+		A3974F0D24B2427A00DE7E82 /* Preset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3974F0C24B2427A00DE7E82 /* Preset.swift */; };
 		C42FFBFA1C3DDAAC00823BD4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C42FFBF91C3DDAAC00823BD4 /* AppDelegate.swift */; };
 		C42FFBFF1C3DDAAC00823BD4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C42FFBFD1C3DDAAC00823BD4 /* Main.storyboard */; };
 		C42FFC011C3DDAAC00823BD4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C42FFC001C3DDAAC00823BD4 /* Assets.xcassets */; };
@@ -79,6 +81,8 @@
 		94B009E61C4B61BD000CF18E /* SynthVC+NoteNames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SynthVC+NoteNames.swift"; sourceTree = "<group>"; };
 		94FBB47D1C4483AE00E14C86 /* Double+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		94FBB4811C44868000E14C86 /* VerticalSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerticalSlider.swift; sourceTree = "<group>"; };
+		A3289A6524B13AF200B7498C /* MusicBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicBox.swift; sourceTree = "<group>"; };
+		A3974F0C24B2427A00DE7E82 /* Preset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preset.swift; sourceTree = "<group>"; };
 		C42FFBF61C3DDAAC00823BD4 /* AnalogSynthX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AnalogSynthX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C42FFBF91C3DDAAC00823BD4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C42FFBFE1C3DDAAC00823BD4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -146,7 +150,6 @@
 			isa = PBXGroup;
 			children = (
 				949B1C3B1C431E5400BFFA10 /* SynthViewController.swift */,
-				94B009E81C4B61EB000CF18E /* Helpers */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 				C4E8ED251C43AD650041965F /* AudioSystem */,
 				94B798911C4AA6B30020727B /* AudioProcessors */,
 				949B1C1D1C431E5400BFFA10 /* CustomControls */,
+				94B009E81C4B61EB000CF18E /* Helpers */,
 				949B1C571C431E5B00BFFA10 /* ViewControllers */,
 				C42FFC001C3DDAAC00823BD4 /* Assets.xcassets */,
 				C42FFBFD1C3DDAAC00823BD4 /* Main.storyboard */,
@@ -263,6 +267,8 @@
 			children = (
 				C4E8ED211C43AA8E0041965F /* Conductor.swift */,
 				C49D69791D1F2CB000BF018A /* GeneratorBank.swift */,
+				A3289A6524B13AF200B7498C /* MusicBox.swift */,
+				A3974F0C24B2427A00DE7E82 /* Preset.swift */,
 			);
 			name = AudioSystem;
 			sourceTree = "<group>";
@@ -371,9 +377,11 @@
 				94453BC31C4499BD00608231 /* String+RandomGreeting.swift in Sources */,
 				C42FFBFA1C3DDAAC00823BD4 /* AppDelegate.swift in Sources */,
 				949B1C501C431E5400BFFA10 /* WaveformSegmentedView+Extensions.swift in Sources */,
+				A3974F0D24B2427A00DE7E82 /* Preset.swift in Sources */,
 				949B1C511C431E5400BFFA10 /* SMAlphaImageSegment.swift in Sources */,
 				949B1C491C431E5400BFFA10 /* Knob.swift in Sources */,
 				941771121C4C908000855BDA /* CGFloat+Extensions.swift in Sources */,
+				A3289A6624B13AF200B7498C /* MusicBox.swift in Sources */,
 				949B1C551C431E5400BFFA10 /* SMSegmentView.swift in Sources */,
 				940D15131C49A9E200C88CA6 /* SynthVC+UIHelpers.swift in Sources */,
 				948440791F254B850079FB9C /* KnobStyleKit.swift in Sources */,

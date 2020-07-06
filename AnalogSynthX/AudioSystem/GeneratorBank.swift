@@ -175,7 +175,7 @@ class GeneratorBank: AKPolyphonicNode {
 
     /// Function to start, play, or activate the node, all do the same thing
     override func play(noteNumber: MIDINoteNumber, velocity: MIDIVelocity, channel: MIDIChannel = 0) {
-        
+        //print("generatorBank.play(\(noteNumber))")
         vco1.play(noteNumber: MIDINoteNumber(Int(noteNumber) + offset1), velocity: velocity)
         vco2.play(noteNumber: MIDINoteNumber(Int(noteNumber) + offset2), velocity: velocity)
         if noteNumber >= 12 {
@@ -191,7 +191,7 @@ class GeneratorBank: AKPolyphonicNode {
 
     /// Function to stop or bypass the node, both are equivalent
     override func stop(noteNumber: MIDINoteNumber) {
-
+        //print("generatorBank.stop(\(noteNumber))")
         vco1.stop(noteNumber: MIDINoteNumber(Int(noteNumber) + offset1))
         vco2.stop(noteNumber: MIDINoteNumber(Int(noteNumber) + offset2))
         if noteNumber >= 12 {

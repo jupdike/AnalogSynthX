@@ -95,7 +95,14 @@ class SynthViewController: UIViewController {
     // MARK: - viewDidLoad
     // *********************************************************
 
+    static var instance: SynthViewController? = nil
+    
+    var vco1WaveformSegment: SMSegmentView! = nil
+    var vco2WaveformSegment: SMSegmentView! = nil
+    var lfoWaveformSegment: SMSegmentView! = nil
+    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
 
         // Create WaveformSegmentedViews
@@ -106,14 +113,48 @@ class SynthViewController: UIViewController {
 
         // Set Preset Control Values
         setDefaultValues()
+        let deadlineTime = DispatchTime.now() + 3.0 // no overlapping (besides reverb and delay?)
+        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+            self.tryLoadLastPreset()
+        }
 
         // Greeting
         statusLabel.text = String.randomGreeting()
+        
+        SynthViewController.instance = self
     }
-
+    
     // *********************************************************
     // MARK: - Defaults/Presets
     // *********************************************************
+    
+    func tryLoadLastPreset() {
+        if Conductor.haveRootFile("last-preset.json") {
+            Conductor.getDocsFileAsData("last-preset", ext: "json", failure: {}, success: { data in
+                let decoder = JSONDecoder()
+                var preset: Preset? = nil
+                do {
+                    preset = try decoder.decode(Preset.self, from: data)
+                }
+                catch {
+                    print("there was an error: \(error)")
+                }
+                if let p = preset {
+                    self.loadPreset(p)
+                }
+            })
+        }
+    }
+    
+    func saveCurrentAsLastPreset() {
+        let preset = conductor.savePreset(holdEnabled: holdMode, monoEnabled: monoMode)
+        let str = preset.toString()
+        do {
+            try str.write(to: URL(fileURLWithPath: Conductor.docRoot() + "/" + "last-preset.json"), atomically: true, encoding: .utf8)
+        } catch {
+            print(error)
+        }
+    }
 
     func setDefaultValues() {
 
@@ -209,8 +250,8 @@ class SynthViewController: UIViewController {
         masterVolKnob.value = conductor.masterVolume.volume
 
         // Calculate Logarithmic scales based on knob position
-        conductor.filterSection.cutoffFrequency = cutoffFreqFromValue(Double(cutoffKnob.value))
-        conductor.bitCrusher.sampleRate = crusherFreqFromValue(Double(crushAmtKnob.value))
+        conductor.filterSection.cutoffFrequency = Conductor.cutoffFreqFromValue(Double(cutoffKnob.value))
+        conductor.bitCrusher.sampleRate = Conductor.crusherFreqFromValue(Double(crushAmtKnob.value))
         conductor.bitCrusher.bitDepth = 8
     }
 
@@ -365,12 +406,6 @@ class SynthViewController: UIViewController {
         }
     }
 
-    // Universal
-    @IBAction func midiPanicPressed(_ sender: RoundedButton) {
-        turnOffHeldKeys()
-        statusLabel.text = "All Notes Off"
-    }
-
     @IBAction func displayModeToggled(_ sender: UIButton) {
         if sender.isSelected {
             sender.isSelected = false
@@ -383,21 +418,127 @@ class SynthViewController: UIViewController {
         }
     }
 
+    var musicBox: MusicBox? = nil
+
     // About App
     @IBAction func buildThisSynth(_ sender: RoundedButton) {
-        openURL("https://audiokitpro.com/audiokit/")
+        //openURL("https://audiokitpro.com/audiokit/")
+        print("Copy")
     }
 
     @IBAction func newAppPressed(_ sender: RoundedButton) {
-         openURL("https://audiokitpro.com/audiokit-synth-one/")
+        //openURL("https://audiokitpro.com/audiokit-synth-one/")
+        print("Play MusicBox")
+        if musicBox == nil {
+            musicBox = MusicBox()
+        }
+        musicBox!.start()
     }
 
+    //var lastPreset: Preset? = nil
     @IBAction func webPressed(_ sender: RoundedButton) {
-         openURL("http://audiokit.io/examples/AnalogSynthX")
+        //openURL("http://audiokit.io/examples/AnalogSynthX")
+        print("Save")
+        // to disk
+        saveCurrentAsLastPreset() //conductor.savePreset(holdEnabled: holdMode, monoEnabled: monoMode)
+    }
+
+    @IBAction func midiPanicPressed(_ sender: RoundedButton) {
+        print("Load")
+//        var aPreset = Preset(delayEnabled: true, reverbEnabled: true, fattenEnabled: false,
+//                            delayTime: 0.25, delayMix: 0.6, reverbAmount: 0.94, reverbMix: 0.13,
+//                            vco1Enabled: true, vco2Enabled: true,
+//                            vcoWaveform1: 0, vcoWaveform2: 0,
+//                            osc1Semitones: 0, osc2Semitones: 0,
+//                            oscMix: 0.5, osc2Detune: 0, subMix: 0, oscMorph: 0,
+//                            fmMix: 0, fmMod: 0,
+//                            lfoWaveform: 0, lfoAmount: 0, lfoRate: 0,
+//
+//                            filterCutoff: 0.333, filterResonance: 0.5,
+//                            filterEnabled: true, bitcrushEnabled: false, crushAmount: 0,
+//                            noiseMix: 0.13,
+//
+//                            holdEnabled: false, monoEnabled: false,
+//                            attackDuration: 0, decayDuration: 0.25, sustainLevel: 0.1, releaseDuration: 0.18,
+//                            masterVolume: 0.75)
+//        if let last = lastPreset {
+//            aPreset = last
+//        }
+//        loadPreset(aPreset)
+        
+        // from disk!
+        tryLoadLastPreset()
+    }
+    
+    func loadPreset(_ preset: Preset) {
+        // ------------------------------------------
+        // --- DSP
+        conductor.loadPreset(preset)
+
+        // ------------------------------------------
+        // --- UI
+        delayToggle.isSelected = preset.delayEnabled
+        reverbToggle.isSelected = preset.reverbEnabled
+        
+        delayTimeKnob.value = preset.delayTime
+        delayMixKnob.value = preset.delayMix
+        reverbAmtKnob.value = preset.reverbAmount
+        reverbMixKnob.value = preset.reverbMix
+        
+        oscMixKnob.value = preset.oscMix
+        osc1SemitonesKnob.value = Double(preset.osc1Semitones)
+        osc2SemitonesKnob.value = Double(preset.osc2Semitones)
+        osc2DetuneKnob.value = preset.osc2Detune
+        subMixKnob.value = preset.subMix
+        morphKnob.value = preset.oscMorph
+        
+        vco1WaveformSegment!.selectSegmentAtIndex(preset.vcoWaveform1)
+        vco2WaveformSegment!.selectSegmentAtIndex(preset.vcoWaveform2)
+        vco1Toggle.isSelected = preset.vco1Enabled
+        vco2Toggle.isSelected = preset.vco2Enabled
+        noiseMixKnob.value = preset.noiseMix
+        fmMixKnob.value = preset.fmMix
+        fmModKnob.value = preset.fmMod
+
+        lfoWaveformSegment!.selectSegmentAtIndex(preset.lfoWaveform)
+        lfoAmtKnob.value = preset.lfoAmount
+        lfoRateKnob.value = preset.lfoRate
+
+        filterToggle.isSelected = preset.filterEnabled
+        rezKnob.value = preset.filterResonance
+        cutoffKnob.value = preset.filterCutoff
+        
+        bitcrushToggle.isSelected = preset.bitcrushEnabled
+        crushAmtKnob.value = preset.crushAmount
+        
+        holdToggle.isSelected = preset.holdEnabled
+        monoToggle.isSelected = preset.monoEnabled
+        monoMode = preset.monoEnabled
+//        if monoMode {
+//            turnOffHeldKeys()
+//        }
+        holdMode = preset.holdEnabled
+//        if !preset.holdEnabled {
+//            turnOffHeldKeys()
+//        }
+
+        fattenToggle.isSelected = preset.fattenEnabled
+        
+        attackSlider.currentValue = CGFloat(conductor.core.attackDuration)
+        decaySlider.currentValue = CGFloat(conductor.core.decayDuration)
+        sustainSlider.currentValue = CGFloat(conductor.core.sustainLevel)
+        releaseSlider.currentValue = CGFloat(conductor.core.releaseDuration)
+
+        masterVolKnob.value = preset.masterVolume
+        
+        // TODOx
     }
     
     @IBAction func updatePressed(_ sender: RoundedButton) {
-        openURL("https://itunes.apple.com/us/app/audiokit-synth-one-synthesizer/id1371050497?ls=1&mt=8")
+        //openURL("https://itunes.apple.com/us/app/audiokit-synth-one-synthesizer/id1371050497?ls=1&mt=8")
+        // new panic
+        turnOffHeldKeys()
+        statusLabel.text = "All Notes Off"
     }
     
     
@@ -444,6 +585,20 @@ class SynthViewController: UIViewController {
     // MARK: - 🎹 Key UI/UX Helpers
     // *********************************************************
 
+    func pressKeyDownPlease(_ note: Int) {
+        guard let key = self.view.viewWithTag(note + 200) as? UIButton else {
+            return
+        }
+        turnOnKey(key)
+    }
+    
+    func releaseKeyUpPlease(_ note: Int) {
+        guard let key = self.view.viewWithTag(note + 200) as? UIButton else {
+            return
+        }
+        turnOffKey(key)
+    }
+    
     func turnOnKey(_ key: UIButton) {
         updateKeyToDownPosition(key)
         let midiNote = midiNoteFromTag(key.tag)
@@ -606,7 +761,7 @@ extension SynthViewController: KnobDelegate {
 
         // Filter
         case ControlTag.cutoff.rawValue:
-            let cutOffFrequency = cutoffFreqFromValue(value)
+            let cutOffFrequency = Conductor.cutoffFreqFromValue(value)
             statusLabel.text = "Cutoff: \(cutOffFrequency.decimalString) Hz"
             conductor.filterSection.cutoffFrequency = cutOffFrequency
 
@@ -616,7 +771,7 @@ extension SynthViewController: KnobDelegate {
 
         // Crusher
         case ControlTag.crushAmt.rawValue:
-            let crushAmt = crusherFreqFromValue(value)
+            let crushAmt = Conductor.crusherFreqFromValue(value)
             statusLabel.text = "Bitcrush: \(crushAmt.decimalString) Sample Rate"
             conductor.bitCrusher.sampleRate = crushAmt
 
