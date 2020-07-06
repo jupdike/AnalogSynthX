@@ -113,10 +113,10 @@ class SynthViewController: UIViewController {
 
         // Set Preset Control Values
         setDefaultValues()
-        let deadlineTime = DispatchTime.now() + 3.0 // no overlapping (besides reverb and delay?)
-        DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
+        //let deadlineTime = DispatchTime.now() + 3.0 // no overlapping (besides reverb and delay?)
+        //DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
             self.tryLoadLastPreset()
-        }
+        //}
 
         // Greeting
         statusLabel.text = String.randomGreeting()
@@ -146,11 +146,11 @@ class SynthViewController: UIViewController {
         }
     }
     
-    func saveCurrentAsLastPreset() {
+    func saveCurrent(asFile: String) {
         let preset = conductor.savePreset(holdEnabled: holdMode, monoEnabled: monoMode)
         let str = preset.toString()
         do {
-            try str.write(to: URL(fileURLWithPath: Conductor.docRoot() + "/" + "last-preset.json"), atomically: true, encoding: .utf8)
+            try str.write(to: URL(fileURLWithPath: Conductor.docRoot() + "/" + asFile), atomically: true, encoding: .utf8)
         } catch {
             print(error)
         }
@@ -423,7 +423,20 @@ class SynthViewController: UIViewController {
     // About App
     @IBAction func buildThisSynth(_ sender: RoundedButton) {
         //openURL("https://audiokitpro.com/audiokit/")
-        print("Copy")
+        print("Share")
+        
+        let presetText = conductor.savePreset(holdEnabled: holdMode, monoEnabled: monoMode).toString()
+        let export = "asx-preset-export.json"
+        saveCurrent(asFile: export)
+        let fileURL = URL(fileURLWithPath: Conductor.docRoot() + "/" + export)
+        let activity = UIActivityViewController.init(activityItems: [presetText, fileURL], applicationActivities: [])
+        let frame = self.view.frame
+        activity.popoverPresentationController?.sourceView = self.view;
+        // sourceRect is the button that was clicked on ...
+        activity.popoverPresentationController?.sourceRect = CGRect.init(origin: CGPoint.init(x: frame.width - 80.0, y: 36.0), size: CGSize.init(width: 20.0, height: 20.0))
+        self.present(activity, animated: true, completion: {
+            // TODO if needed ...
+        })
     }
 
     @IBAction func newAppPressed(_ sender: RoundedButton) {
@@ -440,9 +453,31 @@ class SynthViewController: UIViewController {
         //openURL("http://audiokit.io/examples/AnalogSynthX")
         print("Save")
         // to disk
-        saveCurrentAsLastPreset() //conductor.savePreset(holdEnabled: holdMode, monoEnabled: monoMode)
+        saveCurrent(asFile: "last-preset.json") //conductor.savePreset(holdEnabled: holdMode, monoEnabled: monoMode)
     }
-
+    
+    
+    @IBAction func pastePressed(_ sender: Any) {
+        if let stringRaw = UIPasteboard.general.string {
+            // undo stupid smart quotes! from Byword or other overly clever apps!
+            let string = stringRaw.replacingOccurrences(of: "“", with: "\"")
+                .replacingOccurrences(of: "”", with: "\"")
+            if let data = string.data(using: .utf8) {
+                let decoder = JSONDecoder()
+                var preset: Preset? = nil
+                do {
+                    preset = try decoder.decode(Preset.self, from: data)
+                }
+                catch {
+                    print("there was an error: \(error)")
+                }
+                if let p = preset {
+                    self.loadPreset(p)
+                }
+            }
+        }
+    }
+    
     @IBAction func midiPanicPressed(_ sender: RoundedButton) {
         print("Load")
 //        var aPreset = Preset(delayEnabled: true, reverbEnabled: true, fattenEnabled: false,

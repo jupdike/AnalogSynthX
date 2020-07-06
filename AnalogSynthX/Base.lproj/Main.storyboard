@@ -41,7 +41,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bcu-W9-Pl6" userLabel="Panic Btn" customClass="RoundedButton" customModule="AnalogSynthX" customModuleProvider="target">
-                                        <rect key="frame" x="744" y="8" width="68" height="30"/>
+                                        <rect key="frame" x="683" y="8" width="68" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="AvenirNextCondensed-Regular" family="Avenir Next Condensed" pointSize="17"/>
@@ -75,7 +75,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Trk-6J-804" userLabel="Panic Btn" customClass="RoundedButton" customModule="AnalogSynthX" customModuleProvider="target">
-                                        <rect key="frame" x="820" y="8" width="68" height="30"/>
+                                        <rect key="frame" x="759" y="8" width="68" height="30"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <fontDescription key="fontDescription" name="AvenirNextCondensed-Regular" family="Avenir Next Condensed" pointSize="17"/>
@@ -85,6 +85,16 @@
                                         </state>
                                         <connections>
                                             <action selector="webPressed:" destination="Z3O-nk-rpn" eventType="touchUpInside" id="BGJ-7g-MIu"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X4N-Nf-J22" userLabel="Paste Btn" customClass="RoundedButton" customModule="AnalogSynthX" customModuleProvider="target">
+                                        <rect key="frame" x="863" y="7" width="68" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" name="AvenirNextCondensed-Regular" family="Avenir Next Condensed" pointSize="17"/>
+                                        <state key="normal" title="Paste"/>
+                                        <connections>
+                                            <action selector="pastePressed:" destination="Z3O-nk-rpn" eventType="touchUpInside" id="f27-3h-7WU"/>
                                         </connections>
                                     </button>
                                 </subviews>
